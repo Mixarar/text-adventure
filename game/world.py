@@ -3,8 +3,11 @@ class Room:
         self.name = name
         self.interior = interior
         self.players = []
-        #self.doors = {} future door logic
+        self.doors = {}
     
+    def add_door(self,x,y,to_room,to_x,to_y):
+        self.doors[(x,y)] = (to_room,to_x,to_y)
+
     def add_player(self,player):
         self.players.append(player)
 
@@ -15,30 +18,21 @@ class Room:
         display_grid = [row[:] for row in self.interior]
         for player in self.players:
             x, y = player.x, player.y
-            display_grid[x][y] = player.name[0]
+            display_grid[y][x] = player.name[0]
 
         return display_grid
 
-    def valid(self,player,dir):
+    def valid(self, player, dir):
         interior = self.interior
-        x,y=player.position()
-        if dir == "up" and interior[x][y-1]=='.':
+        x, y = player.position()
+
+        if dir == "up" and y > 0 and interior[y-1][x] != '#':
             return True
-        elif dir == "down" and interior[x][y+1]=='.':
+        elif dir == "down" and y < len(interior) - 1 and interior[y+1][x] != '#':
             return True
-        elif dir == "right" and interior[x+1][y]=='.':
+        elif dir == "right" and x < len(interior[0]) - 1 and interior[y][x+1] != '#':
             return True
-        elif dir == "left" and interior[x-1][y]=='.':
+        elif dir == "left" and x > 0 and interior[y][x-1] != '#':
             return True
         else:
             return False
-        
-    def teleport(self, new_room, x, y):
-        if new_room.interior[x][y] == '.':
-            self.room.remove_player(self)
-            self.room = new_room
-            self.x = x
-            self.y = y
-            self.room.add_player(self)
-        else:
-            print(f"Cannot teleport to invalid position ({x},{y}) in room {new_room.name}.")
