@@ -1,7 +1,13 @@
+from game.inventory import Inventory
+
 class Character:
-    def __init__(self, name, room, x=0, y=0):
+    def __init__(self, name, room, x=0, y=0, maxhealth=100):
         self.name = name
         self.room = room
+        self.maxhealth = maxhealth
+        self.health = self.maxhealth
+        self.alive = True
+        self.inventory = Inventory()
         if self.room.interior[y][x] == '.' or self.room.interior[y][x] == '?':
             self.x = x
             self.y = y
@@ -9,6 +15,8 @@ class Character:
         else:
             print(f"Wrong position at {x},{y}!")
 
+    def use(self,item):
+        self.inventory.use(item)
 
     def move(self,dir):
         if self.room.valid(self, dir):
@@ -42,3 +50,31 @@ class Character:
         view = self.room.display()
         view[self.y][self.x] = '@'
         return view
+    
+    def die(self):
+        self.alive = False
+
+    def take_damage(self, damage):
+        if not self.alive:
+            return False
+        self.health -= damage
+        if self.health <= 0:
+            self.health = 0
+            self.die()
+    
+    def heal(self, amount: int):
+        if not self.alive:
+            return False
+
+        self.health = min(self.max_health, self.health + amount)
+
+    def invsee(self):
+        return self.inventory.storage
+    
+    def loot(player):
+        chest = player.room.get_chest_at(player.position())
+        if not chest:
+            return "There is nothing to loot here."
+
+        return chest.loot(player)
+

@@ -1,7 +1,19 @@
+import os
 import game
 player = game.player
 world = game.world
+inventory = game.inventory
+obj = game.object
 
+def clearConsole():
+    command = 'clear'
+    if os.name in ('nt', 'dos'):  # If computer is running windows use cls
+        command = 'cls'
+    os.system(command)
+
+# Set up the evironment
+
+# The main spawn
 room_spawn = world.Room('Spawn', 
                        [
                             ["#", "?", "#", "#", "#"],
@@ -11,7 +23,7 @@ room_spawn = world.Room('Spawn',
                             ["#", "#", "#", "#", "#"]
                        ]
                        )
-
+# Closet room
 room_closet = world.Room('Closet', 
                        [
                             ["#", "?", "#", "#"],
@@ -22,15 +34,31 @@ room_closet = world.Room('Closet',
                        )
 
 TestChar = player.Character("TestChar",room_spawn,1,1)
-#print(type(TestChar))
-#print(dir(TestChar)) 
-# Room Initialize
+# Door Initialization
 room_spawn.add_door(1,0,room_closet,1,1)
 room_closet.add_door(1,0,room_spawn,1,1)
 
+# Chests Initialization
+chest = obj.Chest({
+    "Coin": 5,
+    "SmallPotion": 1
+})
 
-while True:
-    TestChar.move(input())
-    print(TestChar.position())
-    for i in TestChar.look():
-        print(i)
+room_closet.add_chest(2, 2, chest)
+
+
+try:
+     while True:
+          i = input()
+          clearConsole()
+          if i == "inventory":
+               print(TestChar.invsee())
+          elif i == "loot":
+               print(TestChar.loot())
+          else:
+               TestChar.move(i)
+          print(f"Current room: {TestChar.room.name}")
+          for i in TestChar.look():
+               print(i)
+except KeyboardInterrupt:
+     print("Closing program...")

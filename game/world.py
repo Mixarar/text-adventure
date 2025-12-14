@@ -4,9 +4,13 @@ class Room:
         self.interior = interior
         self.players = []
         self.doors = {}
+        self.chests = {}
     
     def add_door(self,x,y,to_room,to_x,to_y):
         self.doors[(x,y)] = (to_room,to_x,to_y)
+    
+    def add_chest(self, x, y, chest):
+        self.chests[(x, y)] = chest
 
     def add_player(self,player):
         self.players.append(player)
@@ -16,6 +20,8 @@ class Room:
 
     def display(self):
         display_grid = [row[:] for row in self.interior]
+        for (x, y), chest in self.chests.items():
+            if not chest.looted: display_grid[y][x] = '!'
         for player in self.players:
             x, y = player.x, player.y
             display_grid[y][x] = player.name[0]
@@ -36,3 +42,6 @@ class Room:
             return True
         else:
             return False
+        
+    def get_chest_at(self, pos):
+        return self.chests.get(pos)
