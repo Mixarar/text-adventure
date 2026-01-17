@@ -25,15 +25,15 @@ class Inventory:
         else:
             return "Ran out of item"
 
-    def use(self, item):
+    def use(self, item, player):
         if self.storage[item]<=0: return False
         self.remove_item(item)
         match item:
             case "SmallPotion":
-                self.player.heal(20)
+                player.heal(20)
                 return "You used a small potion!"
             case "BigPotion":
-                self.player.heal(50)
+                player.heal(50)
                 return "You used a big potion!"
             case "Coin":
                 return "The coin is shiny! But you do not need it, so you throw it away"

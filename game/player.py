@@ -24,7 +24,7 @@ class Character:
                     self.dmgmult = 1.2
                 case {"IronSword": True}:
                     self.dmgmult = 1.5
-        return self.inventory.use(item)
+        return self.inventory.use(item, self)
 
 
 
@@ -84,7 +84,7 @@ class Character:
         if not self.alive:
             return False
 
-        self.health = min(self.max_health, self.health + amount)
+        self.health = min(self.maxhealth, self.health + amount)
 
     def invsee(self):
         return self.inventory.storage

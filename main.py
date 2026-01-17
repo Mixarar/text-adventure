@@ -76,7 +76,7 @@ try:
                TestChar.move(i)
           
           if TestChar.alive:
-               print(f"Current room: {TestChar.room.name}")
+               print(f"Current room: {TestChar.room.name}, Current health: {TestChar.health}/{TestChar.maxhealth}")
                for i in TestChar.look():
                     print(i)
           else:
