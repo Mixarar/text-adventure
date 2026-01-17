@@ -4,6 +4,8 @@ player = game.player
 world = game.world
 inventory = game.inventory
 obj = game.object
+npc = game.npc
+
 
 def clearConsole():
     command = 'clear'
@@ -44,21 +46,40 @@ chest = obj.Chest({
     "SmallPotion": 1
 })
 
+# Npcs Initialization
+badguy = npc.Enemy("Badguy", health=30, damage=5)
+room_spawn.add_npc(3, 3, badguy)
+
 room_closet.add_chest(2, 2, chest)
 
-
+print("Useful commands are: inventory, loot, use")
+print("To move, type the direction, up/left/right/down")
+print(f"Current room: {TestChar.room.name}")
+for i in TestChar.look():
+    print(i)
 try:
      while True:
-          i = input()
-          clearConsole()
+          if TestChar.alive:
+            i = input()
+            clearConsole()
           if i == "inventory":
                print(TestChar.invsee())
           elif i == "loot":
                print(TestChar.loot())
+          elif i.startswith("use "):
+                try:
+                    item = i.split()[1]
+                    print(TestChar.use(item))
+                except IndexError:
+                    print("Use what? (Example: use SmallPotion)")
           else:
                TestChar.move(i)
-          print(f"Current room: {TestChar.room.name}")
-          for i in TestChar.look():
-               print(i)
+          
+          if TestChar.alive:
+               print(f"Current room: {TestChar.room.name}")
+               for i in TestChar.look():
+                    print(i)
+          else:
+              break
 except KeyboardInterrupt:
      print("Closing program...")

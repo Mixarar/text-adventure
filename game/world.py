@@ -25,7 +25,10 @@ class Room:
     def display(self):
         display_grid = [row[:] for row in self.interior]
         for (x, y), chest in self.chests.items():
-            if not chest.looted: display_grid[y][x] = '!'
+            if not chest.looted: display_grid[y][x] = '$'
+        
+        for (x, y), npc in self.npcs.items():
+            display_grid[y][x] = '!'
         
         for player in self.players:
             x, y = player.x, player.y

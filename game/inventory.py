@@ -1,5 +1,9 @@
 class Inventory:
     def __init__(self):
+        self.sword = {
+            "WoodSword": False,
+            "IronSword": False
+        }
         self.storage = {
             "SmallPotion": 0,
             "BigPotion": 0,
@@ -26,14 +30,22 @@ class Inventory:
         self.remove_item(item)
         match item:
             case "SmallPotion":
+                self.player.heal(20)
                 return "You used a small potion!"
             case "BigPotion":
+                self.player.heal(50)
                 return "You used a big potion!"
             case "Coin":
-                return "The coin is shiny!"
+                return "The coin is shiny! But you do not need it, so you throw it away"
             case "WoodSword":
-                #if ## change sword
+                self.sword["WoodSword"] == True
+                if self.sword["IronSword"]:
+                    self.sword["IronSword"] == False
+                    self.add_item("IronSword")
                 return "You equipped the Wooden sword!"
             case "IronSword":
-                #if ## change sword
+                self.sword["IronSword"] == True
+                if self.sword["WoodSword"]:
+                    self.sword["WoodSword"] == False
+                    self.add_item("WoodSword")
                 return "You equipped the Iron sword!"

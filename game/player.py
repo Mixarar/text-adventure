@@ -1,4 +1,5 @@
 from game.inventory import Inventory
+from game.battle import Battle
 
 class Character:
     def __init__(self, name, room, x=0, y=0, maxhealth=100):
@@ -7,6 +8,7 @@ class Character:
         self.maxhealth = maxhealth
         self.health = self.maxhealth
         self.alive = True
+        self.dmgmult = 1.0
         self.inventory = Inventory()
         if self.room.interior[y][x] == '.' or self.room.interior[y][x] == '?':
             self.x = x
@@ -16,7 +18,15 @@ class Character:
             print(f"Wrong position at {x},{y}!")
 
     def use(self,item):
-        self.inventory.use(item)
+        if item == "IronSword" or item == "WoodSword":
+            match self.inventory.sword:
+                case {"WoodSword": True}:
+                    self.dmgmult = 1.2
+                case {"IronSword": True}:
+                    self.dmgmult = 1.5
+        return self.inventory.use(item)
+
+
 
     def move(self,dir):
         if self.room.valid(self, dir):
@@ -32,9 +42,15 @@ class Character:
             if (self.x,self.y) in self.room.doors:
                 target_room, target_x, target_y = self.room.doors[(self.x, self.y)]
                 self.teleport(target_room, target_x, target_y)
-            elif (self.x,self.y) in self.room.chests:
-                
+            elif (self.x,self.y) in self.room.npcs:
+                target_npc = self.room.npcs[(self.x,self.y)]
+                Battle(self, target_npc)
 
+                if not target_npc.alive:
+                    del self.room.npcs[(self.x,self.y)]
+                return "Battle"
+
+                
     def teleport(self, new_room, x, y):
         if new_room.interior[y][x] == '.':
             self.room.remove_player(self)
