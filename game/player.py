@@ -32,6 +32,8 @@ class Character:
             if (self.x,self.y) in self.room.doors:
                 target_room, target_x, target_y = self.room.doors[(self.x, self.y)]
                 self.teleport(target_room, target_x, target_y)
+            elif (self.x,self.y) in self.room.chests:
+                
 
     def teleport(self, new_room, x, y):
         if new_room.interior[y][x] == '.':

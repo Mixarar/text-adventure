@@ -5,6 +5,7 @@ class Room:
         self.players = []
         self.doors = {}
         self.chests = {}
+        self.npcs = {}
     
     def add_door(self,x,y,to_room,to_x,to_y):
         self.doors[(x,y)] = (to_room,to_x,to_y)
@@ -14,6 +15,9 @@ class Room:
 
     def add_player(self,player):
         self.players.append(player)
+    
+    def add_npc(self, x, y, npc):
+        self.npcs[(x, y)] = npc
 
     def remove_player(self,player):
         self.players.remove(player)
@@ -22,6 +26,7 @@ class Room:
         display_grid = [row[:] for row in self.interior]
         for (x, y), chest in self.chests.items():
             if not chest.looted: display_grid[y][x] = '!'
+        
         for player in self.players:
             x, y = player.x, player.y
             display_grid[y][x] = player.name[0]
