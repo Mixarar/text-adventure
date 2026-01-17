@@ -14,18 +14,15 @@ class Battle:
             print(f"\n{self.player.name} HP: {self.player.health} | {self.enemy.name} HP: {self.enemy.health}")
             
             if self.playerturn:
-                action = input("Your turn! (attack/heal): ").lower()
+                action = input("Your turn! (attack/heal/skip): ").lower()
                 if action == "attack":
                     self.doTurn()
                     self.playerturn = False
                 elif action == "heal":
-                    if self.player.inventory.storage["SmallPotion"] > 0:
-                        self.player.use("SmallPotion")
-                        self.player.heal(20)
-                        print("You healed 20 HP!")
-                        self.playerturn = False
-                    else:
-                        print("No potions!")
+                    print(self.player.use("SmallPotion"))
+                    self.playerturn = False
+                elif action == "skip":
+                    self.playerturn = False
                 else:
                     print("Invalid command.")
             else:

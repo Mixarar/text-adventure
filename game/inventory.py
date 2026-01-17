@@ -31,10 +31,10 @@ class Inventory:
         match item:
             case "SmallPotion":
                 player.heal(20)
-                return "You used a small potion!"
+                return "You used a small potion and healed 20 health!"
             case "BigPotion":
                 player.heal(50)
-                return "You used a big potion!"
+                return "You used a big potion and healed 50 health!"
             case "Coin":
                 return "The coin is shiny! But you do not need it, so you throw it away"
             case "WoodSword":
