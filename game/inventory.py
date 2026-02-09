@@ -26,7 +26,7 @@ class Inventory:
             return "Ran out of item"
 
     def use(self, item, player):
-        if self.storage[item]<=0: return False
+        if self.storage[item]<=0: return "You could not use the item as you did not have it."
         self.remove_item(item)
         match item:
             case "SmallPotion":
